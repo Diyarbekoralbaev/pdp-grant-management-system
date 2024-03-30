@@ -41,8 +41,8 @@ class LoginView(APIView):
             user = UserModel.objects.filter(username=username).first()
             print(user, password, user.password, check_password(password, user.password))
             if user and check_password(password, user.password) and user.is_active:
-                AccessToken.objects.filter(user=user).delete()
-                RefreshToken.objects.filter(user=user).delete()
+                # AccessToken.objects.filter(user=user).delete()
+                # RefreshToken.objects.filter(user=user).delete()
                 access_token = AccessToken.for_user(user)
                 refresh_token = RefreshToken.for_user(user)
                 user_id = user.id

@@ -41,9 +41,14 @@ class LoginView(APIView):
             user = UserModel.objects.filter(username=username).first()
             print(user, password, user.password, check_password(password, user.password))
             if user and check_password(password, user.password) and user.is_active:
+                AccessToken.objects.filter(user=user).delete()
+                RefreshToken.objects.filter(user=user).delete()
                 access_token = AccessToken.for_user(user)
                 refresh_token = RefreshToken.for_user(user)
-                return Response({'access_token': str(access_token), 'refresh_token': str(refresh_token)})
+                user_id = user.id
+                return Response(
+                    {'access_token': str(access_token), 'refresh_token': str(refresh_token), 'user_id': user_id},
+                    status=status.HTTP_200_OK)
             raise AuthenticationFailed('Invalid username or password')
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -51,6 +56,7 @@ class LoginView(APIView):
 class RefreshView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
+
     @swagger_auto_schema(
         tags=['auth'],
         security=[{'Bearer': []}],
@@ -70,6 +76,7 @@ class RefreshView(APIView):
 class ProtectedView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
+
     @swagger_auto_schema(
         tags=['auth'],
         security=[{'Bearer': []}],
@@ -80,8 +87,8 @@ class ProtectedView(APIView):
 
 
 class MeView(APIView):
-    permission_classes = [IsAuthenticated,]
-    authentication_classes = [JWTAuthentication,]
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [JWTAuthentication, ]
 
     @swagger_auto_schema(
         tags=['auth'],
@@ -266,10 +273,13 @@ class UsersView(APIView):
                     user_for_change.is_cook = serializer.validated_data['is_cook', user_for_change.is_cook]
                     user_for_change.is_grant = serializer.validated_data['is_grant', user_for_change.is_grant]
                     user_for_change.student_id = serializer.validated_data['student_id', user_for_change.student_id]
-                    user_for_change.courses_year = serializer.validated_data['courses_year', user_for_change.courses_year]
-                    user_for_change.group_number = serializer.validated_data['group_number', user_for_change.group_number]
+                    user_for_change.courses_year = serializer.validated_data[
+                        'courses_year', user_for_change.courses_year]
+                    user_for_change.group_number = serializer.validated_data[
+                        'group_number', user_for_change.group_number]
                     user_for_change.is_active = serializer.validated_data['is_active', user_for_change.is_active]
-                    user_for_change.is_superuser = serializer.validated_data['is_superuser', user_for_change.is_superuser]
+                    user_for_change.is_superuser = serializer.validated_data[
+                        'is_superuser', user_for_change.is_superuser]
                     user_for_change.save()
                     return Response(serializer.data)
                 raise AuthenticationFailed('User with this id does not exist')
@@ -318,4 +328,3 @@ class UserChangePasswordView(APIView):
                 raise AuthenticationFailed('User with this id does not exist')
             raise AuthenticationFailed('You are not authorized to perform this action')
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-

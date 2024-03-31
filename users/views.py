@@ -44,7 +44,7 @@ class LoginView(APIView):
                 # RefreshToken.objects.filter(user=user).delete()
                 access_token = AccessToken.for_user(user)
                 refresh_token = RefreshToken.for_user(user)
-                user_id = user.uuid
+                user_id = user.id
                 return Response(
                     {'access_token': str(access_token), 'refresh_token': str(refresh_token), 'user_id': user_id},
                     status=status.HTTP_200_OK)
@@ -213,11 +213,11 @@ class DeleteUserView(APIView):
         if serializer.is_valid():
             user = request.user
             if user.is_superuser:
-                user_for_delete = UserModel.objects.filter(id=serializer.validated_data['uuid']).first()
+                user_for_delete = UserModel.objects.filter(id=serializer.validated_data['id']).first()
                 if user_for_delete:
                     user_for_delete.delete()
                     return Response({'message': 'User deleted successfully'})
-                raise AuthenticationFailed('User with this uuid does not exist')
+                raise AuthenticationFailed('User with this id does not exist')
             raise AuthenticationFailed('You are not authorized to perform this action')
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -263,7 +263,7 @@ class UsersView(APIView):
         if serializer.is_valid():
             user = request.user
             if user.is_superuser:
-                user_for_change = UserModel.objects.filter(id=serializer.validated_data['uuid']).first()
+                user_for_change = UserModel.objects.filter(id=serializer.validated_data['id']).first()
                 if user_for_change:
                     user_for_change.username = serializer.validated_data['username', user_for_change.username]
                     user_for_change.email = serializer.validated_data['email', user_for_change.email]
@@ -281,7 +281,7 @@ class UsersView(APIView):
                         'is_superuser', user_for_change.is_superuser]
                     user_for_change.save()
                     return Response(serializer.data)
-                raise AuthenticationFailed('User with this uuid does not exist')
+                raise AuthenticationFailed('User with this id does not exist')
             raise AuthenticationFailed('You are not authorized to perform this action')
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -295,11 +295,11 @@ class UsersView(APIView):
         if serializer.is_valid():
             user = request.user
             if user.is_superuser:
-                user_for_delete = UserModel.objects.filter(id=serializer.validated_data['uuid']).first()
+                user_for_delete = UserModel.objects.filter(id=serializer.validated_data['id']).first()
                 if user_for_delete:
                     user_for_delete.delete()
                     return Response({'message': 'User deleted successfully'})
-                raise AuthenticationFailed('User with this uuid does not exist')
+                raise AuthenticationFailed('User with this id does not exist')
             raise AuthenticationFailed('You are not authorized to perform this action')
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -318,12 +318,12 @@ class UserChangePasswordView(APIView):
         if serializer.is_valid():
             user = request.user
             if user.is_superuser:
-                user_for_change = UserModel.objects.filter(id=serializer.validated_data['uuid']).first()
+                user_for_change = UserModel.objects.filter(id=serializer.validated_data['id']).first()
                 if user_for_change:
                     new_password = serializer.validated_data['new_password']
                     user_for_change.set_password(new_password)
                     user_for_change.save()
                     return Response({'message': 'Password changed successfully'})
-                raise AuthenticationFailed('User with this uuid does not exist')
+                raise AuthenticationFailed('User with this id does not exist')
             raise AuthenticationFailed('You are not authorized to perform this action')
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

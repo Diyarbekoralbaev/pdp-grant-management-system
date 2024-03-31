@@ -22,7 +22,7 @@ def generate_otp():
 
 
 # def generate_qr_code(user):
-#     serializer = QRCodeSerializer(data={'user': user.uuid})
+#     serializer = QRCodeSerializer(data={'user': user.id})
 #     serializer.is_valid(raise_exception=True)
 #     serializer.save()
 #     return serializer.data

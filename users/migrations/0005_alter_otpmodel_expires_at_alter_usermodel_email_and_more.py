@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='usermodel',
-            name='uuid',
+            name='id',
             field=models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, primary_key=True, serialize=False, unique=True),
         ),
         migrations.AlterField(

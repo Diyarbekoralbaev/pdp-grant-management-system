@@ -79,7 +79,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='usermodel',
-            name='uuid',
+            name='id',
             field=models.UUIDField(auto_created=True, editable=False, primary_key=True, serialize=False, unique=True),
         ),
         migrations.AlterField(
@@ -109,7 +109,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OTPModel',
             fields=[
-                ('uuid', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('expires_at', models.DateTimeField(auto_created=True, blank=True, default=datetime.datetime(2024, 3, 28, 7, 12, 15, 613686), editable=False, null=True)),
                 ('otp', models.CharField(max_length=6)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),

@@ -73,15 +73,10 @@ WSGI_APPLICATION = 'grant_app_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'grant_app',
-        'USER': 'postgres',  # Removed the colon from the key here
-        'PASSWORD': '02052005',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 
 # Password validation

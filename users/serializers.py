@@ -5,8 +5,8 @@ from .models import UserModel
 class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ['uuid', 'username', 'email', 'phone', 'password', 'is_student', 'is_cook', 'is_grant', 'student_id', 'courses_year', 'group_number', 'date_joined', 'last_login', 'last_logged_device', 'last_logged_ip']
-        read_only_fields = ['date_joined', 'last_login', 'last_logged_device', 'last_logged_ip', 'uuid']
+        fields = ['id', 'username', 'email', 'phone', 'password', 'is_student', 'is_cook', 'is_grant', 'student_id', 'courses_year', 'group_number', 'date_joined', 'last_login', 'last_logged_device', 'last_logged_ip']
+        read_only_fields = ['date_joined', 'last_login', 'last_logged_device', 'last_logged_ip', 'id']
         extra_kwargs = {
             'password': {'write_only': True},
         }
@@ -39,7 +39,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = '__all__'
-        read_only_fields = ['uuid', 'username', 'email', 'phone', 'is_student', 'is_cook', 'is_grant', 'is_staff', 'is_superuser', 'is_active', 'last_time_eat', 'date_joined', 'last_login', 'last_logged_device', 'last_logged_ip']
+        read_only_fields = ['id', 'username', 'email', 'phone', 'is_student', 'is_cook', 'is_grant', 'is_staff', 'is_superuser', 'is_active', 'last_time_eat', 'date_joined', 'last_login', 'last_logged_device', 'last_logged_ip']
 
 
 class ChangePasswordSerializer(serializers.Serializer):
@@ -87,8 +87,8 @@ class DeleteUserSerializer(serializers.Serializer):
     id = serializers.UUIDField(required=True)
 
     def validate(self, attrs):
-        if not UserModel.objects.filter(id=attrs['uuid']).exists():
-            raise serializers.ValidationError('User with this uuid does not exist')
+        if not UserModel.objects.filter(id=attrs['id']).exists():
+            raise serializers.ValidationError('User with this id does not exist')
         return attrs
 
 

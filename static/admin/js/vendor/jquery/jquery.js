@@ -1222,7 +1222,7 @@ function setDocument( node ) {
 
 				if ( elem ) {
 
-					// Verify the id attribute
+					// Verify the uuid attribute
 					node = elem.getAttributeNode( "id" );
 					if ( node && node.value === id ) {
 						return [ elem ];
@@ -1276,8 +1276,8 @@ function setDocument( node ) {
 		var input;
 
 		documentElement.appendChild( el ).innerHTML =
-			"<a id='" + expando + "' href='' disabled='disabled'></a>" +
-			"<select id='" + expando + "-\r\\' disabled='disabled'>" +
+			"<a uuid='" + expando + "' href='' disabled='disabled'></a>" +
+			"<select uuid='" + expando + "-\r\\' disabled='disabled'>" +
 			"<option selected=''></option></select>";
 
 		// Support: iOS <=7 - 8 only
@@ -1287,13 +1287,13 @@ function setDocument( node ) {
 		}
 
 		// Support: iOS <=7 - 8 only
-		if ( !el.querySelectorAll( "[id~=" + expando + "-]" ).length ) {
+		if ( !el.querySelectorAll( "[uuid~=" + expando + "-]" ).length ) {
 			rbuggyQSA.push( "~=" );
 		}
 
 		// Support: iOS 8 only
 		// https://bugs.webkit.org/show_bug.cgi?id=136851
-		// In-page `selector#id sibling-combinator selector` fails
+		// In-page `selector#uuid sibling-combinator selector` fails
 		if ( !el.querySelectorAll( "a#" + expando + "+*" ).length ) {
 			rbuggyQSA.push( ".#.+[+~]" );
 		}
@@ -2469,7 +2469,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 			// Add elements passing elementMatchers directly to results
 			// Support: iOS <=7 - 9 only
 			// Tolerate NodeList properties (IE: "length"; Safari: <number>) matching
-			// elements by id. (see trac-14142)
+			// elements by uuid. (see trac-14142)
 			for ( ; i !== len && ( elem = elems[ i ] ) != null; i++ ) {
 				if ( byElement && elem ) {
 					j = 0;
@@ -2852,9 +2852,9 @@ jQuery.fn.extend( {
 var rootjQuery,
 
 	// A simple way to check for HTML strings
-	// Prioritize #id over <tag> to avoid XSS via location.hash (trac-9521)
+	// Prioritize #uuid over <tag> to avoid XSS via location.hash (trac-9521)
 	// Strict HTML recognition (trac-11290: must start with <)
-	// Shortcut simple #id case for speed
+	// Shortcut simple #uuid case for speed
 	rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]+))$/,
 
 	init = jQuery.fn.init = function( selector, context, root ) {
@@ -2882,7 +2882,7 @@ var rootjQuery,
 				match = rquickExpr.exec( selector );
 			}
 
-			// Match html or make sure no context is specified for #id
+			// Match html or make sure no context is specified for #uuid
 			if ( match && ( match[ 1 ] || !context ) ) {
 
 				// HANDLE: $(html) -> $(array)
@@ -2914,7 +2914,7 @@ var rootjQuery,
 
 					return this;
 
-				// HANDLE: $(#id)
+				// HANDLE: $(#uuid)
 				} else {
 					elem = document.getElementById( match[ 2 ] );
 

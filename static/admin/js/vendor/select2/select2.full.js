@@ -430,7 +430,7 @@ var requirejs, require, define;
             //Using a non-zero value because of concern for what old browsers
             //do, and latest browsers "upgrade" to 4 if lower value is used:
             //http://www.whatwg.org/specs/web-apps/current-work/multipage/timers.html#dom-windowtimers-settimeout:
-            //If want a value immediately, use require('id') instead -- something
+            //If want a value immediately, use require('uuid') instead -- something
             //that works in almond on the global level, but not guaranteed and
             //unlikely to work in other AMD implementations.
             setTimeout(function () {
@@ -777,19 +777,19 @@ S2.define('select2/utils',[
 
   var id = 0;
   Utils.GetUniqueElementId = function (element) {
-    // Get a unique element Id. If element has no id,
-    // creates a new unique number, stores it in the id
-    // attribute and returns the new id.
-    // If an id already exists, it simply returns it.
+    // Get a unique element Id. If element has no uuid,
+    // creates a new unique number, stores it in the uuid
+    // attribute and returns the new uuid.
+    // If an uuid already exists, it simply returns it.
 
-    var select2Id = element.getAttribute('data-select2-id');
+    var select2Id = element.getAttribute('data-select2-uuid');
     if (select2Id == null) {
-      // If element has id, use it.
+      // If element has uuid, use it.
       if (element.id) {
         select2Id = element.id;
-        element.setAttribute('data-select2-id', select2Id);
+        element.setAttribute('data-select2-uuid', select2Id);
       } else {
-        element.setAttribute('data-select2-id', ++id);
+        element.setAttribute('data-select2-uuid', ++id);
         select2Id = id.toString();
       }
     }
@@ -833,7 +833,7 @@ S2.define('select2/utils',[
       delete Utils.__cache[id];
     }
 
-    element.removeAttribute('data-select2-id');
+    element.removeAttribute('data-select2-uuid');
   };
 
   return Utils;
@@ -973,7 +973,7 @@ S2.define('select2/results',[
 
         var item = Utils.GetData(this, 'data');
 
-        // id needs to be converted to a string when comparing
+        // uuid needs to be converted to a string when comparing
         var id = '' + item.id;
 
         if ((item.element != null && item.element.selected) ||

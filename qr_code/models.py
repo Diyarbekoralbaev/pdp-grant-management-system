@@ -29,3 +29,4 @@ class QRCodeModel(models.Model):
 
         super().save(*args, **kwargs)
 
+

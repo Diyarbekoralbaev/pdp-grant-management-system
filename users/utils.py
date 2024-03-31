@@ -1,5 +1,8 @@
 from django.core.mail import send_mail
 from random import randint
+from qr_code.models import QRCodeModel
+from qr_code.serializers import QRCodeSerializer
+
 
 def send_otp(otp, email):
     try:
@@ -16,3 +19,10 @@ def send_otp(otp, email):
 
 def generate_otp():
     return randint(100000, 999999)
+
+
+def generate_qr_code(user):
+    serializer = QRCodeSerializer(data={'user': user.id})
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return serializer.data

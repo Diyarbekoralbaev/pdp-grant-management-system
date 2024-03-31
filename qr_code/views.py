@@ -22,7 +22,7 @@ class QRCodeView(APIView):
         serializer = QRCodeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({serializer.data}, status=status.HTTP_201_CREATED)
 
     def get(self, request):
         qr_codes = QRCodeModel.objects.all()
@@ -39,9 +39,12 @@ class QRCodeDetailView(APIView):
     def get(self, request, code):
         qr_code = QRCodeModel.objects.filter(code=code).first()
         if not qr_code:
-            raise AuthenticationFailed('Invalid QR Code')
+            raise AuthenticationFailed('Invalid QR Code', status.HTTP_404_NOT_FOUND)
         serializer = QRCodeSerializer(qr_code)
-        return Response(serializer.data)
+        return Response({
+            'status': 'success',
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)
 
     def put(self, request, code):
         qr_code = QRCodeModel.objects.filter(code=code).first()

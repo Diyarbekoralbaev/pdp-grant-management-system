@@ -75,12 +75,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'grant_app',
-        'USER:': 'postgres',
+        'USER': 'postgres',  # Removed the colon from the key here
         'PASSWORD': '02052005',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
+
 
 
 # Password validation

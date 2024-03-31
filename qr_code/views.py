@@ -22,7 +22,7 @@ class QRCodeView(APIView):
         serializer = QRCodeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({serializer.data}, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get(self, request):
         qr_codes = QRCodeModel.objects.all()

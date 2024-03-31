@@ -14,7 +14,6 @@ from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from drf_yasg.utils import swagger_auto_schema
 from .utils import generate_otp, send_otp, generate_qr_code
 
-
 class SignupView(APIView):
     @swagger_auto_schema(
         request_body=SignupSerializer,
@@ -46,9 +45,8 @@ class LoginView(APIView):
                 access_token = AccessToken.for_user(user)
                 refresh_token = RefreshToken.for_user(user)
                 user_id = user.id
-                qr_code = generate_qr_code(user)
                 return Response(
-                    {'access_token': str(access_token), 'refresh_token': str(refresh_token), 'user_id': user_id, 'qr_code': qr_code},
+                    {'access_token': str(access_token), 'refresh_token': str(refresh_token), 'user_id': user_id},
                     status=status.HTTP_200_OK)
             raise AuthenticationFailed('Invalid username or password')
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -21,8 +21,8 @@ def generate_otp():
     return randint(100000, 999999)
 
 
-def generate_qr_code(user):
-    serializer = QRCodeSerializer(data={'user': user.id})
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return serializer.data
+# def generate_qr_code(user):
+#     serializer = QRCodeSerializer(data={'user': user.id})
+#     serializer.is_valid(raise_exception=True)
+#     serializer.save()
+#     return serializer.data

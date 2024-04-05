@@ -6,11 +6,13 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .models import QRCodeModel
+from .models import QRCodeModel, FoodIntakeRecord
 from .serializers import QRCodeSerializer
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from drf_yasg.utils import swagger_auto_schema
+from django.utils import timezone
+from datetime import timedelta
 
 
 class QRCodeView(APIView):
@@ -38,6 +40,13 @@ class QRCodeDetailView(APIView):
 
     def get(self, request, code):
         qr_code = QRCodeModel.objects.filter(code=code).first()
+        user = QRCodeModel.objects.filter(code=code).first().user
+        last_record = FoodIntakeRecord.objects.filter(user=user).last()
+        if last_record and last_record.taken_at + timedelta(seconds=10) > timezone.now(): # you can change the time here to test
+            raise AuthenticationFailed('You can only take food every 2 hours')
+        else:
+            record = FoodIntakeRecord.objects.create(user=user)
+            record.save()
         if not qr_code:
             raise AuthenticationFailed('Invalid QR Code', status.HTTP_404_NOT_FOUND)
         serializer = QRCodeSerializer(qr_code)

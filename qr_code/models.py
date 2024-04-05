@@ -30,3 +30,12 @@ class QRCodeModel(models.Model):
         super().save(*args, **kwargs)
 
 
+class FoodIntakeRecord(models.Model):
+    user = models.ForeignKey('users.UserModel', on_delete=models.CASCADE)
+    taken_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.taken_at}"
+
+
+

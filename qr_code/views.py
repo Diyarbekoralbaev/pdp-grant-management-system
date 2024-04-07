@@ -42,8 +42,8 @@ class QRCodeDetailView(APIView):
         qr_code = QRCodeModel.objects.filter(code=code).first()
         user = QRCodeModel.objects.filter(code=code).first().user
         last_record = FoodIntakeRecord.objects.filter(user=user).last()
-        if last_record and last_record.taken_at + timedelta(seconds=10) > timezone.now(): # you can change the time here to test
-            raise AuthenticationFailed('You can only take food every 2 hours')
+        if last_record and last_record.taken_at + timedelta(seconds=20) > timezone.now(): # you can change the time here to test
+            raise AuthenticationFailed('You can only take food every 2 hours', status.HTTP_403_FORBIDDEN)
         else:
             record = FoodIntakeRecord.objects.create(user=user)
             record.save()

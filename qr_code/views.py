@@ -5,7 +5,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
 from .models import QRCodeModel, FoodIntakeRecord
 from .serializers import QRCodeSerializer
 from django.contrib.auth.hashers import make_password, check_password
@@ -42,7 +41,7 @@ class QRCodeDetailView(APIView):
         qr_code = QRCodeModel.objects.filter(code=code).first()
         user = QRCodeModel.objects.filter(code=code).first().user
         last_record = FoodIntakeRecord.objects.filter(user=user).last()
-        if last_record and last_record.taken_at + timedelta(seconds=20) > timezone.now(): # you can change the time here to test
+        if last_record and last_record.taken_at + timedelta(hours=3) > timezone.now(): # you can change the time here to test
             raise AuthenticationFailed('You can only take food every 2 hours', status.HTTP_403_FORBIDDEN)
         else:
             record = FoodIntakeRecord.objects.create(user=user)

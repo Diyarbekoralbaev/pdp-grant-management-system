@@ -16,7 +16,8 @@ class QRCodeModel(models.Model):
         return str(self.code)
 
     def is_expired(self):
-        return datetime.now() > self.expired_at or self.expired_at is None
+        # Use timezone.now() to get the current time with timezone info
+        return timezone.now() > self.expired_at or self.expired_at is None
 
     def save(self, *args, **kwargs):
         if not self.id:  # Only for new instances, not for updates

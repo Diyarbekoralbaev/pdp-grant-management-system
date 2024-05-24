@@ -1,6 +1,6 @@
 import uuid
 from rest_framework import serializers
-from .models import QRCodeModel
+from .models import QRCodeModel, FoodIntakeRecord
 
 
 class QRCodeSerializer(serializers.ModelSerializer):
@@ -34,4 +34,10 @@ class QRCodeSerializer(serializers.ModelSerializer):
 
         return attrs
 
+
+class FoodIntakeRecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FoodIntakeRecord
+        fields = ['id', 'user', 'taken_at']
+    taken_at = serializers.DateTimeField(read_only=True)
 

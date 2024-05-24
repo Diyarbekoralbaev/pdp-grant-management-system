@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import QRCodeModel, FoodIntakeRecord
-from .serializers import QRCodeSerializer
+from .serializers import QRCodeSerializer, FoodIntakeRecordSerializer
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from drf_yasg.utils import swagger_auto_schema
@@ -77,4 +77,11 @@ class QRCodeDetailView(APIView):
         serializer = QRCodeSerializer(qr_code, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        return Response(serializer.data)
+
+
+class FoodIntakeRecordView(APIView):
+    def get(self, request, user_id):
+        records = FoodIntakeRecord.objects.filter(user=user_id)
+        serializer = FoodIntakeRecordSerializer(records, many=True)
         return Response(serializer.data)

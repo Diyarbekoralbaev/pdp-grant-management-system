@@ -13,7 +13,7 @@ class QRCodeModel(models.Model):
     expired_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.code
+        return str(self.code)
 
     def is_expired(self):
         return datetime.now() > self.expired_at or self.expired_at is None

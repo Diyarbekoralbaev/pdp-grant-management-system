@@ -15,6 +15,7 @@ SECRET_KEY = 'django-insecure-ki#*!u@ay*s!afeeu1t7=^di&9^z#&u)4h8zute3v%eze&2s50
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://pdp.araltech.tech']
 
 
 # Application definition

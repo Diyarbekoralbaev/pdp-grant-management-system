@@ -13,4 +13,8 @@ class FoodIntakeRecordAdmin(admin.ModelAdmin):
     list_display = ('user', 'taken_at')
     list_filter = ('user', 'taken_at')
     search_fields = ('user', 'taken_at')
-    readonly_fields = ('taken_at')
+    readonly_fields = 'taken_at'
+
+
+admin.site.register(QRCodeModel, QRCodeModelAdmin)
+admin.site.register(FoodIntakeRecord, FoodIntakeRecordAdmin)
